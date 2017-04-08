@@ -1,0 +1,41 @@
+bin
+target
+
+# osx noise
+.DS_Store
+*.ipa
+*.swp
+*~.nib
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files and dirs
+build/
+bin/
+gen/
+.gradle/
+.gralde/*
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+.settings
+
+# Android Studio
+.idea/
+/.idea/workspace.xml
+out/
+/local.properties
+*.iml
+*.ipr
+
+# Serenity
+serenity.properties
+projectConfig.xcconfig
