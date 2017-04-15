@@ -128,10 +128,31 @@ public class Utils extends PageObject {
         tapElement(el);
         el.sendKeys(text);
     }
+    
+    public boolean doubleTapElement(WebElement el) {
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            HashMap<String, String> tapObject = new HashMap<>();
+            tapObject.put("element", w(el).getId());
+            js.executeScript("mobile:doubleTap", tapObject);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
-    public void tapElement(WebElementFacade el) {
-        el.waitUntilClickable();
-        el.click();
+    public boolean tapElement(WebElementFacade el) {
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) getDriver();
+            HashMap<String, String> tapObject = new HashMap<>();
+            tapObject.put("x", String.valueOf(el.getSize().getWidth() / 2));
+            tapObject.put("y", String.valueOf(el.getSize().getHeight() / 2));
+            tapObject.put("element", w(el).getId());
+            js.executeScript("mobile:tap", tapObject);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public void clickElement(WebElementFacade el) {
@@ -205,17 +226,27 @@ public class Utils extends PageObject {
         js.executeScript("mobile: scroll", scrollObject);
     }
 
-    public WebElement scrollToElementNew(String text) {
-        System.out.println("The element to scroll is: " + text);
+    public IOSElement scrollToChannel(String elementName) {
+        WebElement elementToScroll =
+                iOSDriver().findElementByAccessibilityId("channel" + elementName + "Cell");
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         HashMap<String, String> scrollObject = new HashMap<>();
-        scrollObject.put("predicateString", "value == '" + text + "'");
+        scrollObject.put("element", ((RemoteWebElement) elementToScroll).getId());
+        scrollObject.put("toVisible", "true");
+        scrollObject.put("direction", "down");
         js.executeScript("mobile: scroll", scrollObject);
-        return iOSDriver().findElementByIosNsPredicate("value = '" + text + "'");
+        js.executeScript("mobile: scroll", scrollObject);
+        return iOSDriver().findElementByAccessibilityId("channel" + elementName + "Cell");
     }
-
-    public void tapOnScrolledElement(WebElement element) {
-        element.click();
+    
+    public void tapOnVisibleChannel(String elementName){
+        WebElement el = scrollToChannel(elementName);
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        HashMap<String, String> tapObject = new HashMap<>();
+        tapObject.put("x", String.valueOf(el.getSize().getWidth() / 2));
+        tapObject.put("y", String.valueOf(el.getSize().getHeight() / 2));
+        tapObject.put("element", ((RemoteWebElement) el).getId());
+        js.executeScript("mobile:tap", tapObject);
     }
 
     public void swipe(String direction) {
