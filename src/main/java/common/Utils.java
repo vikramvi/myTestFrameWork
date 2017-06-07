@@ -185,7 +185,7 @@ public class Utils extends PageObject {
     }
 
     public void removeApp() {
-        appiumDriver().removeApp("com.ellation.vrv");
+        appiumDriver().removeApp("com.domain.projectName");
     }
 
     public void setContextToWebview() {
